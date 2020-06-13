@@ -4,6 +4,7 @@ namespace Controllers\Api;
 
 use Controllers\BaseController;
 use Models\Product;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class HelloController extends BaseController {
 
@@ -18,11 +19,40 @@ class HelloController extends BaseController {
 	}
 
 	public function GetProductsAction ($request, $response, $args) {
-		$objProduct = new Product;
-		$products = $objProduct->findProducts();
+		$query = DB::table('products');
+		$products = $query->get();
 
 		$data['data'] = $products;
 		$data['success'] = true;
 		return $this->throwJSON($response, $data);
+	}
+
+	public function PanggilNamaAction ($request, $response, $args){
+		$nama = $args['nama'];
+		$data['nama'] = $nama;
+		$data['success'] = true;
+		$data['message'] = 'Hello ' .$nama;
+		return $this->throwJSON($response, $data);
+	}
+
+	public function CreateProductAction ($request, $response, $args){
+		$body = $request -> getParsedBody();
+
+		if(!isset($body['nama']) && empty(body['nama'])){
+			$data['success'] = false;
+			$data['message'] = 'Nama should not be empty';
+		}
+
+		$product = new Product();
+		$product -> nama = $body['nama'];
+		$product -> save();
+
+		$data['product'] = $product;
+		$data['success'] = true;
+		$data['message'] = 'Create Product Success';
+
+		return $this-> throwJSON($response, $data);
+
+
 	}
 }

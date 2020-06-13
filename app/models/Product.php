@@ -6,8 +6,8 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class Product extends Model {
     use SoftDeletes;
-    protected $table = 'product';
-
+    //protected $table = 'products';
+    /*
     public function findProducts($filter = []) {
         $query = DB::table($this->table);
         foreach ($filter as $key => $value) {
@@ -39,4 +39,5 @@ class Product extends Model {
         }
         return $query->update($data);
     }
+    */
 }
